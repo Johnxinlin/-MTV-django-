@@ -1,0 +1,6 @@
+<select name="grade" class="form-control">
+    <option value="0"></option>
+    {% for grade in grades %}
+        <option value="{{ grade.id }}"{% if grade.id == student.grade_id %}selected{% endif %}>{{ grade }}</option>
+    {% endfor %}
+</select>

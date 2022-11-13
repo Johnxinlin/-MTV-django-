@@ -1,0 +1,92 @@
+{% load static %}
+{% load customer_filters %}
+{% load customer_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页面</title>
+{#    <link rel="stylesheet" href="/static/teacher/index.css" >#}
+    <link rel="stylesheet" href="{% static 'teacher/css/index.css' %}">
+</head>
+<body>
+    <div>
+        <h2>我是第{{ num }}次访问浏览器</h2>
+        <h3 style="color:lightblue">
+            teacher首页面
+        </h3>
+        <p>当前时间：{{ now|date:"Y年m月d日 H:i:s" }}</p>
+        <p>列表：{{ lt|first }}</p>
+        <p>相加：{{ lt.0|add:1.2}}</p>
+        <p>相减：{{ lt.1|add:-2.2}}</p>
+        <p>相连：{{ lt.1|add:"a"|default:"something"}}</p>
+        <p>字典：{{ dt }}</p>
+        <p>函数：{{ func }}</p>
+        <p>js: {{ js }}</p>
+{#        <p>{{ js|safe }}</p>#}
+        {% now_time %}
+        <table>
+            <tr>
+                <th>序号</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>性别</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>{{ students.0.name }}</td>
+                <td>{{ students.0.age }}</td>
+                <td>{{ students.0.sex }}</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>{{ students.1.name }}</td>
+                <td>{{ students.1.age }}</td>
+                <td>{{ students.1.sex }}</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>{{ students.2.name }}</td>
+                <td>{{ students.2.age }}</td>
+                <td>{{ students.2.sex }}</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>{{ students.3.name }}</td>
+                <td>{{ students.3.age }}</td>
+                <td>{{ students.3.sex }}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>序号</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>qq</th>
+                <th>电话</th>
+                <th>创建时间</th>
+            </tr>
+
+            {% for i in students %}
+                <tr {% if i.sex == 0 %} style="color:red"{% endif %}>
+                    <td><a href="{% url 'teacher:detail' i.name %}">{{ forloop.counter }}</a></td>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.age }}</td>
+                    <td>{{ i.sex|to_sex:"en" }}</td>
+                    <td>{{ i.qq }}</td>
+                    <td>{{ i.phone }}</td>
+                    <td>{{ i.create_time }}</td>
+{#                    <td>{{ i.course }}</td>#}
+{#                    <td>#}
+{#                        {% show_list i.course  style='button'%}#}
+{#                    </td>#}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div style="position:fixed; bottom: 20px; right: 10px; background-color: #7ab5d3">
+        {%  include 'teacher/ad.html' %}
+    </div>
+</body>
+</html>

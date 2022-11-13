@@ -1,0 +1,85 @@
+{% extends 'student/base.html' %}
+{% load customerTags %}
+{% block section %}{{ section }}{% endblock %}
+{% block login %}欢迎{{ name }}登陆{% endblock %}
+{#{% block loginOrlogout %}#}
+{#    {% if request.session.name %}#}
+{#        <li><a href="{% url 'students:student_logout' %}">退出登陆</a></li>#}
+{#    {% else %}#}
+{#        <li><a href="{% url 'students:student_login' %}">登陆</a></li>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+{% load customerFilters %}
+{% block content %}
+    <form class="form-horizontal" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username" class="col-sm-2 control-label">姓名</label>
+            <div class="col-sm-2">
+                <input type="text" name="username" class="form-control" id="username" placeholder="请输入您的姓名"
+                       value="{{ student.name }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="age" class="col-sm-2 control-label">年龄</label>
+            <div class="col-sm-2">
+                <input type="text" name="age" class="form-control" id="age" placeholder="请输入您的年龄"
+                       value="{{ student.age }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="age" class="col-sm-2 control-label">性别</label>
+            <div class="col-sm-2">
+                <input type="radio" name="sex" value="1" {% if student.sex == 1 %}checked{% endif %}> 男
+                <input type="radio" name="sex" value="0" {% if student.sex == 0 %}checked{% endif %}> 女
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="qq" class="col-sm-2 control-label">qq</label>
+            <div class="col-sm-3">
+                <input type="text" name="qq" class="form-control" id="qq" placeholder="请输入您的qq" value="{{ student.qq }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phone" class="col-sm-2 control-label">电话</label>
+            <div class="col-sm-3">
+                <input type="text" name="phone" class="form-control" placeholder="请输入您的电话" id="phone" value="{{ student.phone }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="num" class="col-sm-2 control-label">身份证</label>
+            <div class="col-sm-4">
+                <input type="text" name="num" class="form-control" id="num" placeholder="请输入您的身份证" value="{% if not student.detail.num == '' %}{{ student.detail.num }}{% else %}信息待补充{% endif %}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="college" class="col-sm-2 control-label">院校</label>
+            <div class="col-sm-2">
+                <input type="text" name="college" class="form-control" id="college"
+                       value="{% if not student.detail.college == '' %}{{ student.detail.college }}{% else %}信息待补充{% endif %}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="grade" class="col-sm-2 control-label">分班</label>
+            <div class="col-sm-2">
+{#                <select class="form-control">#}
+{#                    <option>{{ student.grade }}</option>#}
+{#                    {% for grade in grades %}#}
+{#                    <option>{{ grade }}</option>#}
+{#                    {% endfor %}#}
+{#                </select>#}
+{#                {% college student %}#}
+                {% show_class student %}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                {% if section == '学生信息添加' or section == '学生信息编辑' %}
+                    <button type="submit" class="btn btn-success">保存</button>
+                    <button type="reset" class="btn btn-default">重置</button>
+                {% elif section == '学生信息查询' %}
+                    <a href="{% url 'student:students' %}" class="btn btn-info">返回</a>{% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

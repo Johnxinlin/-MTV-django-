@@ -1,0 +1,23 @@
+{#<ul>#}
+{#    {% for c in ls %}#}
+{#        <li>{{ c }}</li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+
+{% for c in ls %}
+    {% if style == 'button' %}
+        <div class="list-group">
+            <button type="button" class="list-group-item">{{ c }}</button>
+        </div>
+    {% elif style == 'link' %}
+        <div class="list-group">
+            <a href="#" class="list-group-item">{{ c }}</a>
+        </div>
+    {% else %}
+        <ul class="list-group">
+            <li class="list-group-item">
+                {{ c }}
+            </li>
+        </ul>
+    {% endif %}
+{% endfor %}

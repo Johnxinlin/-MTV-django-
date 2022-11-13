@@ -1,0 +1,81 @@
+{% extends 'student/base.html' %}
+{% load static %}
+{% load customerFilters %}
+{% load customerTags %}
+{% block section %}{{ section }}{% endblock %}
+{% block title %}首页面{% endblock %}
+{% block login %}欢迎{{ user.username|default:'游客' }}{% endblock %}
+{% block loginOrlogout %}
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'student:student_logout' %}">退出</a></li>
+    {% else %}
+        <li><a href="{% url 'student:student_login' %}">登陆</a></li>
+    {% endif %}
+{% endblock %}
+{% block search %}
+    <div class="row">
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入你要查找的学生姓名，qq或电话" name="search">
+            </div>
+            <button type="submit" class="btn btn-primary">搜索</button>
+            <button type="submit" class="btn btn-info">重置</button>
+            {% if perms.student %}<a href="{% url 'student:detail_form_add' %}" class="btn btn-danger">添加</a>{% endif %}
+        </form>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>qq号码</th>
+                <th>电话号码</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <td><a href="{% url 'student:detail' student.id %}">{{ student.id }}</a></td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.age }}</td>
+                    <td>{{ student.sex|to_sex }}</td>
+                    <td>{{ student.qq }}</td>
+                    <td>{{ student.phone }}</td>
+                    <td>
+                        <a href="{% url 'student:detail_form_edit' student.id %}" type="submit" class="btn btn-info btn-xs">编辑</a>
+                        <a href="{% url 'student:delete' student.id %}" class="btn btn-danger btn-xs">删除</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+    <div class="btn-group row" role="group" aria-label="..." style="display: flex">
+        <nav aria-label="Page navigation">
+            <!--自定义包含标签实现分页展示-->
+            {% pagination_html %}
+        </nav>
+
+        <div class="btn-group" role="group" style="margin-top: 20px;">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                {{ per_page }}条/页
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" style="margin-top: -26px; min-width: 102px">
+                <li><a href="{{ request.path }}?per_page=2">2条/页</a></li>
+                <li><a href="{{ request.path }}?per_page=5">5条/页</a></li>
+                <li><a href="{{ request.path }}?per_page=10">10条/页</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
